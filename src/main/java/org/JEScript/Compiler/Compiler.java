@@ -10,18 +10,15 @@ import java.util.Scanner;
 public class Compiler {
 
     public static CompileResult compile(File file, HashMap<String, Object> args) throws IOException {
-        // read file to string array
-        // for each line
-        //      if line is a comment, skip
-
+        long startTime = System.currentTimeMillis();
         ArrayList<String> lines = new ArrayList<>();
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             lines.add(scanner.nextLine());
         }
         for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            if (line.startsWith("//")) {
+            String line = lines.get(i).replace(";","");
+            if (line.startsWith("//") || line.isEmpty()) {
                 lines.remove(i);
                 i--;
             }
@@ -36,6 +33,8 @@ public class Compiler {
         String newFilename = split[split.length-1] + ".java";
         File newFile = new File(newFilename);
         write(newFile, lines.toArray(new String[0]));
+        long endTime = System.currentTimeMillis();
+        System.out.println("Compiled " + filename + " in " + (endTime - startTime) + "ms");
         return CompileResult.SUCCESS;
     }
 

@@ -11,7 +11,8 @@ public class Main {
 
         try {
             Compiler.compile(script, new HashMap<>());
-        }catch (Exception e){}
-        System.out.println(script.getAbsolutePath());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
