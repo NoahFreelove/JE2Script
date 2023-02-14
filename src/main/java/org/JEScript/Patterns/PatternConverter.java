@@ -1,5 +1,7 @@
 package org.JEScript.Patterns;
 
+import org.JEScript.Compiler.Compiler;
+
 public class PatternConverter {
 
     public static String convert(String input){
@@ -24,9 +26,9 @@ public class PatternConverter {
         String[] bracketSplit = trimmedOutput.substring(1).split("\\(");
 
         trimmedOutput = varReplace(trimmedOutput);
-
         trimmedOutput = commandReplace(trimmedOutput);
-
+        trimmedOutput = newReplace(trimmedOutput);
+        trimmedOutput = equalReplace(trimmedOutput);
         if(funcDecl){
             String eventName = trimmedOutput.replace("event", "").split("\\(")[0].trim();
             trimmedOutput = eventReplace(eventName, trimmedOutput.contains("{"));
@@ -46,7 +48,7 @@ public class PatternConverter {
     private static String shortcutReplace(String input){
 
         // only run if position, rotation, or scale is in the string
-        if(!input.contains("position") && !input.contains("rotation") && !input.contains("scale")){
+        if(!input.contains("position") && !input.contains("rotation") && !input.contains("scale") && !input.contains("active")){
             return input;
         }
 
@@ -77,6 +79,34 @@ public class PatternConverter {
         else if(input.contains("scale")){
             input = input.replace("scale", "getTransform().scale()");
         }
+
+        // if it is active-><something> then replace it with setActive(<something>)
+        if(input.contains("active->")){
+            input = input.replace("active->", "setActive(");
+            input = input + ")";
+        }
+        // if it is active then replace it with getActive()
+        else if(input.contains("active")){
+            input = input.replace("active", "getActive()");
+        }
+
+        return input;
+    }
+
+    private static String equalReplace(String input){
+        // if NOT in a string, replace : with =
+        // go through each character
+        boolean inString = false;
+        for(int i = 0; i < input.length(); i++){
+            // if it is a ", then toggle inString
+            if(input.charAt(i) == '"'){
+                inString = !inString;
+            }
+            // if it is a : and not in a string, replace it with =
+            else if(input.charAt(i) == ':' && !inString){
+                input = input.substring(0, i) + "=" + input.substring(i + 1);
+            }
+        }
         return input;
     }
 
@@ -85,7 +115,12 @@ public class PatternConverter {
         // foreach command in CommandReplacement, replace it with the value
         for (String key : VarReplacement.replacements.keySet()) {
             if(input.contains(key)){
-                input = input.replace(key, VarReplacement.replacements.get(key));
+                ReplacementResult rr = VarReplacement.replacements.get(key);
+                if(!rr.importStatement().equals("")){
+                    if(!Compiler.imports.contains(rr.importStatement()))
+                        Compiler.imports.add(rr.importStatement());
+                }
+                input = input.replace(key, rr.result());
             }
         }
 
@@ -110,9 +145,20 @@ public class PatternConverter {
         // foreach command in CommandReplacement, replace it with the value
         for (String key : CommandReplacement.replacements.keySet()) {
             if(input.contains(key)){
-                input = input.replace("#" + key, CommandReplacement.replacements.get(key));
+                ReplacementResult rr = CommandReplacement.replacements.get(key);
+                if(!rr.importStatement().equals("")){
+                    if(!Compiler.imports.contains(rr.importStatement()))
+                        Compiler.imports.add(rr.importStatement());
+                }
+                input = input.replace("#" + key, rr.result());
             }
         }
+
+        return input;
+    }
+
+    private static String newReplace(String input){
+        input = input.replace("**", "new ");
 
         return input;
     }

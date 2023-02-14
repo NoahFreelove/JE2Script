@@ -1,7 +1,7 @@
-public static void run(){
+event start(){
 #print(#parent().#ts());
-#parent().position->new vec2(0, 0, 0);
-vec2 a = #parent().position;
-
-GO go = new GO();
+#parent().position->**vec2(0,0,0);
+vec2 a : #parent().position;
+GO go : **GO();
+#print(go.active);
 }

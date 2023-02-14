@@ -4,15 +4,14 @@ import java.util.HashMap;
 
 public class CommandReplacement {
 
-    public static HashMap<String, String> replacements = new HashMap<>();
+    public static HashMap<String, ReplacementResult> replacements = new HashMap<>();
 
     static {
-        replacements.put("print", "System.out.println");
-        replacements.put("println", "System.out.println");
-        replacements.put("log", "Logger.log");
-        replacements.put("queue", "Manager.queueGLFunction");
-        replacements.put("parent", "getAttachedObject");
-        replacements.put("ts", "toString");
-
+        replacements.put("print", new ReplacementResult("System.out.println",""));
+        replacements.put("println", new ReplacementResult("System.out.println",""));
+        replacements.put("log", new ReplacementResult("Logger.log","import JE.IO.Logging.Logger;"));
+        replacements.put("queue", new ReplacementResult("Manager.queueGLFunction","JE.Manager;"));
+        replacements.put("parent", new ReplacementResult("getAttachedObject",""));
+        replacements.put("ts", new ReplacementResult("toString",""));
     }
 }

@@ -4,19 +4,19 @@ import java.util.HashMap;
 
 public class VarReplacement {
 
-    public static HashMap<String, String> replacements = new HashMap<>();
+    public static HashMap<String, ReplacementResult> replacements = new HashMap<>();
 
     static {
-        replacements.put("vec3", "Vector3f");
-        replacements.put("vec3i", "Vector3i");
-        replacements.put("vec2", "Vector2f");
-        replacements.put("vec2i", "Vector2i");
-        replacements.put("bool", "boolean");
-        replacements.put("string", "String");
-        replacements.put("str", "String");
-        replacements.put("GO", "GameObject");
-        replacements.put("gameObject", "GameObject");
-        replacements.put("gameobject", "GameObject");
+        replacements.put("vec3", new ReplacementResult("Vector3f","import org.joml.Vector3f;"));
+        replacements.put("vec3i", new ReplacementResult("Vector3i","import org.joml.Vector3i;"));
+        replacements.put("vec2", new ReplacementResult("Vector2f","import org.joml.Vector2f;"));
+        replacements.put("vec2i", new ReplacementResult("Vector2i","import org.joml.Vector2i;"));
+        replacements.put("bool", new ReplacementResult("boolean",""));
+        replacements.put("string", new ReplacementResult("String",""));
+        replacements.put("str", new ReplacementResult("String",""));
+        replacements.put("GO", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
+        replacements.put("gameObject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
+        replacements.put("gameobject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
 
     }
 }

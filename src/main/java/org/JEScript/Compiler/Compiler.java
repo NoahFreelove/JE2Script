@@ -9,7 +9,10 @@ import java.util.Scanner;
 
 public class Compiler {
 
+    public static ArrayList<String> imports = new ArrayList<>();
+
     public static CompileResult compile(File file, HashMap<String, Object> args) throws IOException {
+        imports.clear();
         long startTime = System.currentTimeMillis();
         ArrayList<String> lines = new ArrayList<>();
         Scanner scanner = new Scanner(file);
@@ -25,6 +28,10 @@ public class Compiler {
             else {
                 lines.set(i, PatternConverter.convert(line));
             }
+        }
+        // add all imports to beginning of lines
+        for (String s : imports) {
+            lines.add(0, s);
         }
 
         // save to file named <filename>.java
