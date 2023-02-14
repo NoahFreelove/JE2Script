@@ -56,8 +56,8 @@ public class PatternConverter {
             input = input + ")";
         }
         // if it is position then replace it with getTransform().getPosition()
-        else if(input.contains("position")){
-            input = input.replace("position", "getTransform().position()");
+        if(input.contains("position()")){
+            input = input.replace("position()", "getTransform().position()");
         }
         // if it is rotation-><something> then replace it with getTransform().setRotation(<something>)
         if(input.contains("rotation->")){
@@ -65,8 +65,8 @@ public class PatternConverter {
             input = input + ")";
         }
         // if it is rotation then replace it with getTransform().getRotation()
-        else if(input.contains("rotation")){
-            input = input.replace("rotation", "getTransform().rotation()");
+        if(input.contains("rotation()")){
+            input = input.replace("rotation()", "getTransform().rotation()");
         }
         // if it is scale-><something> then replace it with getTransform().setScale(<something>)
         if(input.contains("scale->")){
@@ -74,8 +74,8 @@ public class PatternConverter {
             input = input + ")";
         }
         // if it is scale then replace it with getTransform().getScale()
-        else if(input.contains("scale")){
-            input = input.replace("scale", "getTransform().scale()");
+        if(input.contains("scale()")){
+            input = input.replace("scale()", "getTransform().scale()");
         }
 
         // if it is active-><something> then replace it with setActive(<something>)
@@ -84,8 +84,8 @@ public class PatternConverter {
             input = input + ")";
         }
         // if it is active then replace it with getActive()
-        else if(input.contains("active")){
-            input = input.replace("active", "getActive()");
+        if(input.contains("active()")){
+            input = input.replace("active()", "getActive()");
         }
 
         return input;

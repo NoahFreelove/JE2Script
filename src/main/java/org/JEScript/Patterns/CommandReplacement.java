@@ -14,6 +14,8 @@ public class CommandReplacement {
         replacements.put("parent", new ReplacementResult("getAttachedObject",""));
         replacements.put("ts", new ReplacementResult("toString",""));
         replacements.put("mainCamera", new ReplacementResult("Manager.getMainCamera","import JE.Manager;"));
+        replacements.put("scene", new ReplacementResult("Manager.activeScene","import JE.Manager;"));
+        replacements.put("setScene", new ReplacementResult("Manager.setScene","import JE.Manager;"));
 
     }
 }
