@@ -1,7 +1,0 @@
-event start(){
-#print(#parent().#ts());
-#parent().position->**vec2(0,0,0);
-vec2 a : #parent().position;
-GO go : **GO();
-#print(go.active);
-}

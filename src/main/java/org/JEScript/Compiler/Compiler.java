@@ -37,7 +37,7 @@ public class Compiler {
         // save to file named <filename>.java
         String filename = file.getName();
         String[] split = filename.split("\\.");
-        String newFilename = split[split.length-1] + ".java";
+        String newFilename = split[0] + ".java";
         File newFile = new File(newFilename);
         write(newFile, lines.toArray(new String[0]));
         long endTime = System.currentTimeMillis();

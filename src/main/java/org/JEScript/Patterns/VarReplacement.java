@@ -17,6 +17,10 @@ public class VarReplacement {
         replacements.put("GO", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
         replacements.put("gameObject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
         replacements.put("gameobject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
+        replacements.put("cam", new ReplacementResult("Camera","import JE.Rendering.Camera;"));
+        replacements.put("run", new ReplacementResult("()->",""));
+        replacements.put("lam", new ReplacementResult("this::",""));
+
 
     }
 }

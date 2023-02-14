@@ -7,7 +7,13 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        File script = new File("src/main/java/org/JEScript/example.jes");
+        String filename = "example.jes";
+        if(args.length > 0)
+        {
+            filename = args[0];
+        }
+
+        File script = new File(filename);
 
         try {
             Compiler.compile(script, new HashMap<>());

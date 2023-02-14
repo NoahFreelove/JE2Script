@@ -22,8 +22,6 @@ public class PatternConverter {
         String trimmedOutput = input.trim();
 
         boolean funcDecl = trimmedOutput.startsWith("event");
-        // Split function call
-        String[] bracketSplit = trimmedOutput.substring(1).split("\\(");
 
         trimmedOutput = varReplace(trimmedOutput);
         trimmedOutput = commandReplace(trimmedOutput);
@@ -104,7 +102,14 @@ public class PatternConverter {
             }
             // if it is a : and not in a string, replace it with =
             else if(input.charAt(i) == ':' && !inString){
-                input = input.substring(0, i) + "=" + input.substring(i + 1);
+                if(i+1 < input.length()){
+                    if(!(input.charAt(i+1) == ':')){
+                        input = input.substring(0, i) + "=" + input.substring(i + 1);
+                    }
+                    else i++;
+                }
+                else
+                    input = input.substring(0, i) + "=" + input.substring(i + 1);
             }
         }
         return input;
@@ -151,6 +156,7 @@ public class PatternConverter {
                         Compiler.imports.add(rr.importStatement());
                 }
                 input = input.replace("#" + key, rr.result());
+
             }
         }
 
