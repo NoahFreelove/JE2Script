@@ -171,8 +171,8 @@ public class PatternConverter {
 
     private static String eventReplace(String input, boolean addBrackets){
         String replacement = switch (input) {
-            case "start" -> "public void start()";
-            case "update" -> "public void update()";
+            case "start" -> "@Override public void start()";
+            case "update" -> "@Overridepublic void update()";
             default -> input;
         };
         if(addBrackets){

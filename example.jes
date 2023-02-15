@@ -1,5 +1,11 @@
-event start(){
-#parent().position->**vec2(0,0,0)
-#print(**GO().#ts())
-#scene().world.gameObjects.get(0).position->#parent().position();
+import JE.Objects.Scripts.Base.Script;
+public class TestScript extends Script {
+
+    public TestScript(){
+
+    }
+
+    event start(){
+        #print("Hello World");
+    }
 }
