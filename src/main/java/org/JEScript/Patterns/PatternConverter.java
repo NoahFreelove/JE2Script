@@ -5,6 +5,7 @@ import org.JEScript.Compiler.Compiler;
 public class PatternConverter {
 
     private static boolean inComment = false;
+    private static boolean inTryCatch = false;
     public static String convert(String input){
 
         if(input.startsWith("//")){
@@ -31,6 +32,17 @@ public class PatternConverter {
             }
         }
         String trimmedOutput = input.trim();
+        if(trimmedOutput.startsWith("???"))
+        {
+            inTryCatch = true;
+            trimmedOutput = trimmedOutput.replace("???", "try{");
+        }
+
+        if(trimmedOutput.startsWith(":(") && inTryCatch)
+        {
+            inTryCatch = false;
+            trimmedOutput = "}catch(Exception ignored){" + trimmedOutput.replace(":(", "") + "}";
+        }
 
         if(trimmedOutput.startsWith("import")){
             Compiler.addImport(trimmedOutput + ";");

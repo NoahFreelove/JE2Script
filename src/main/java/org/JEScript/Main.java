@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        String filename = "example.jes";
+        String filename = "TestScript.jes";
 
          if(args.length > 0)
         {
@@ -20,17 +20,10 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
         File script = new File(filename);
-        File script2 = new File(filename.replace("example", "example2"));
 
         for (int i = 0; i < times; i++) {
             try {
-                if(i%2==0)
-                {
-                    Compiler.compile(script, new HashMap<>());
-                }
-                else
-                    Compiler.compile(script2, new HashMap<>());
-
+                Compiler.compile(script, new HashMap<>());
             }catch (Exception e){
                 e.printStackTrace();
             }

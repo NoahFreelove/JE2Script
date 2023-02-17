@@ -27,3 +27,11 @@ Transform setters are simplified. ex: `getTransform().setPosition()` becomes `.p
 New features like Friend methods: `:) methodName AllowedClass (Var1 var1, Var2 var2){( some code here )};`
 
 or `Friend methodName AllowedClass (Var1 var1, Var2 var2){( some code here )};`
+
+Ignored TryCatch example: 
+
+`???`
+
+`some error-prone code here`
+
+`:(`
