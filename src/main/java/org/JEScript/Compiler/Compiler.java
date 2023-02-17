@@ -9,7 +9,13 @@ import java.util.Scanner;
 
 public class Compiler {
 
-    public static ArrayList<String> imports = new ArrayList<>();
+    private static ArrayList<String> imports = new ArrayList<>();
+
+    public static void addImport(String s) {
+        if (!imports.contains(s)) {
+            imports.add(s);
+        }
+    }
 
     public static CompileResult compile(File file, HashMap<String, Object> args) throws IOException {
         imports.clear();
@@ -20,7 +26,11 @@ public class Compiler {
             lines.add(scanner.nextLine());
         }
         for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i).replace(";","");
+            String line = lines.get(i);
+            // if line ends with semicolon, remove it
+            if (line.endsWith(";")) {
+                line = line.substring(0, line.length() - 1);
+            }
             if (line.startsWith("//") || line.isEmpty()) {
                 lines.remove(i);
                 i--;

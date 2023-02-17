@@ -1,0 +1,8 @@
+import JE.Objects.Scripts.Base.Script;
+
+public class CoolScript extends Script {
+    @Override public void update(){
+        GO go = **GO();
+        #print(go.#ts());
+    }
+}

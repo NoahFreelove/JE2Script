@@ -1,11 +1,15 @@
 import JE.Objects.Scripts.Base.Script;
+
 public class TestScript extends Script {
-
-    public TestScript(){
-
-    }
-
     event start(){
         #print("Hello World");
     }
+
+    :) method Script (int a, bool b)({
+        #print(a);
+        int i = 0;
+        i++;
+        System.out.print("Hi");
+        System.out.print("\nBye");
+    });
 }

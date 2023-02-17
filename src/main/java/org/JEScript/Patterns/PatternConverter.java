@@ -4,10 +4,21 @@ import org.JEScript.Compiler.Compiler;
 
 public class PatternConverter {
 
+    private static boolean inComment = false;
     public static String convert(String input){
 
         if(input.startsWith("//")){
             return input;
+        }
+
+        if(input.contains("/*")){
+            inComment = true;
+        }
+        if(input.contains("*/")){
+            inComment = false;
+        }
+        if(inComment){
+            return "";
         }
 
         int preSpaces = 0;
@@ -21,12 +32,18 @@ public class PatternConverter {
         }
         String trimmedOutput = input.trim();
 
+        if(trimmedOutput.startsWith("import")){
+            Compiler.addImport(trimmedOutput + ";");
+            return "";
+        }
+
         boolean funcDecl = trimmedOutput.startsWith("event");
 
         trimmedOutput = varReplace(trimmedOutput);
         trimmedOutput = commandReplace(trimmedOutput);
         trimmedOutput = newReplace(trimmedOutput);
         trimmedOutput = equalReplace(trimmedOutput);
+        trimmedOutput = friendReplace(trimmedOutput);
         if(funcDecl){
             String eventName = trimmedOutput.replace("event", "").split("\\(")[0].trim();
             trimmedOutput = eventReplace(eventName, trimmedOutput.contains("{"));
@@ -34,7 +51,7 @@ public class PatternConverter {
         else{
             trimmedOutput = shortcutReplace(trimmedOutput);
         }
-        boolean addSemicolon = !trimmedOutput.endsWith("}") && !trimmedOutput.endsWith("{");
+        boolean addSemicolon = !trimmedOutput.endsWith("}") && !trimmedOutput.endsWith("{") && !trimmedOutput.endsWith("(");
         if(funcDecl)
             addSemicolon = false;
         trimmedOutput = finalize(preSpaces, new StringBuilder(trimmedOutput), addSemicolon);
@@ -103,7 +120,7 @@ public class PatternConverter {
             // if it is a : and not in a string, replace it with =
             else if(input.charAt(i) == ':' && !inString){
                 if(i+1 < input.length()){
-                    if(!(input.charAt(i+1) == ':')){
+                    if(!(input.charAt(i+1) == ':') && !(input.charAt(i+1) == ')')){
                         input = input.substring(0, i) + "=" + input.substring(i + 1);
                     }
                     else i++;
@@ -122,8 +139,7 @@ public class PatternConverter {
             if(input.contains(key)){
                 ReplacementResult rr = VarReplacement.replacements.get(key);
                 if(!rr.importStatement().equals("")){
-                    if(!Compiler.imports.contains(rr.importStatement()))
-                        Compiler.imports.add(rr.importStatement());
+                    Compiler.addImport((rr.importStatement()));
                 }
                 input = input.replace(key, rr.result());
             }
@@ -152,8 +168,7 @@ public class PatternConverter {
             if(input.contains(key)){
                 ReplacementResult rr = CommandReplacement.replacements.get(key);
                 if(!rr.importStatement().equals("")){
-                    if(!Compiler.imports.contains(rr.importStatement()))
-                        Compiler.imports.add(rr.importStatement());
+                    Compiler.addImport((rr.importStatement()));
                 }
                 input = input.replace("#" + key, rr.result());
 
@@ -179,5 +194,46 @@ public class PatternConverter {
             replacement = replacement + "{";
         }
         return replacement;
+    }
+
+    private static String friendReplace(String input){
+        /*
+        Turn
+        :) friend SomeScript (String arg1, int arg2){(
+        )}
+        into
+           public final Friend friend = new Friend(SomeScript.class.getName(), args-> {String arg1 = (String)args[0]; int arg2 = (int)args[1];
+                System.out.println("H
+           });
+         */
+        if(!input.startsWith(":)") && !input.startsWith("Friend "))
+            return input;
+
+        String[] split = input.split(" ");
+        String name = split[1];
+        String className = split[2];
+        String[] argSplit = input.split("\\(")[1].split("\\)")[0].split(",");
+        for (int i = 0; i < argSplit.length; i++) {
+            if(argSplit[i].startsWith(" ")){
+                argSplit[i] = argSplit[i].substring(1);
+            }
+        }
+        String[] argClasses = new String[argSplit.length];
+        String[] argNames = new String[argSplit.length];
+        for (int i = 0; i < argSplit.length; i++) {
+            String[] data = argSplit[i].split(" ");
+            argClasses[i] = data[0];
+            argNames[i] = data[1];
+        }
+
+        String result = "";
+        result += "public final Friend " + name + " = new Friend(" + className + ".class.getName(), args-> {";
+        for (int i = 0; i < argClasses.length; i++) {
+            result += argClasses[i] + " " + argNames[i] + " = (" + argClasses[i] + ")args[" + i + "];";
+        }
+        result = result.substring(0, result.length() - 1);
+        Compiler.addImport("import JE.Utility.Friend;");
+
+        return result;
     }
 }

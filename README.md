@@ -4,20 +4,26 @@ Does this count as a transpiler?
 
 Scripting "language" for JE2 that translates to Java that JE2 can run.
 
-The Main goal of JEScript is to just make it faster to script certain functions that are often used in JE2.
+# Goals:
+1. To just make it faster to script certain functions that are often used in JE2.
 
-Another goal of JEScript is being able to interchangeably use Java and JEScript in the same file.
+2. Being able to interchangeably use Java and JEScript in the same file. The transpiler will only 
+change recognized JEScript code.
 
-## Usage:
-`# - function call. ex: getAttachedObject() becomes #parent()`
 
-`** - new`
+## What's Different?
+`#` - special JEScript function call. ex: `getAttachedObject()` becomes `#parent()`
 
-`: - =`
+`**` can be used interchangeably with `new`
 
-`variable names like Vector3f become vec3, boolean become bool, etc.`
+`:` can be used interchangeable with `=`
 
-`Transform getters are simplified. ex: getTransform().position() becomes .position`
+Variable names like `Vector3f` become `vec3`, `boolean` become `bool`, etc.
 
-`Transform setters are simplified. ex: getTransform().setPosition() becomes .position->`
+Transform getters are simplified. ex: `getTransform().position()` becomes `.position`
 
+Transform setters are simplified. ex: `getTransform().setPosition()` becomes `.position->`
+
+New features like Friend methods: `:) methodName AllowedClass (Var1 var1, Var2 var2){( some code here )};`
+
+or `Friend methodName AllowedClass (Var1 var1, Var2 var2){( some code here )};`
