@@ -1,7 +1,9 @@
 package org.JEScript;
 
 import org.JEScript.Compiler.Compiler;
+import org.JEScript.Compiler.MessageRecorder;
 
+import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 
@@ -13,7 +15,8 @@ public class Main {
         {
             filename = args[0];
         }
-         testCompile(filename, 1);
+         Tools.compileAll("src");
+         //testCompile(filename, 1);
     }
 
     public static void testCompile(String filename, int times){

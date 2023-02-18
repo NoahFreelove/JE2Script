@@ -1,0 +1,25 @@
+package org.JEScript.Compiler;
+import org.JEScript.Main;
+import JE.Objects.Scripts.Base.Script;
+
+public class MessageRecorder extends Script{
+    private Str[] allMessages : **Str[1];
+
+    $construct{
+        allMessages[0] = "Hello, World!";
+    }
+
+    $event start(){
+        #print("start")
+    }
+
+    public void onMessageSent(Str msg){
+        allMessages[0] = msg;
+    }
+
+    :) printRecentMessage Main () ({
+        #print(allMessages[0])
+    })
+
+    public final Friend getAllMessages : **Friend(Compiler.class.getName(), allMessages);
+}

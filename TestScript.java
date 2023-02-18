@@ -12,7 +12,4 @@ public class TestScript extends Script {
         System.out.print("Hi");
         System.out.print("\nBye");
     });
-    try{
-    error thing;
-    }catch(Exception ignored){}
 }

@@ -6,8 +6,15 @@ public class PatternConverter {
 
     private static boolean inComment = false;
     private static boolean inTryCatch = false;
+    private static String className;
     public static String convert(String input){
 
+        // Detect class name
+        if(input.startsWith("public class") || input.startsWith("class")){
+            className = input.replace("public class", "").split(" ")[1].trim();
+        }
+
+        // Ignore Comments
         if(input.startsWith("//")){
             return input;
         }
@@ -22,6 +29,7 @@ public class PatternConverter {
             return "";
         }
 
+        // Keep space formatting
         int preSpaces = 0;
         for(int i = 0; i < input.length(); i++){
             if(input.charAt(i) == ' '){
@@ -31,6 +39,7 @@ public class PatternConverter {
                 break;
             }
         }
+        // Check for sketchy try catch
         String trimmedOutput = input.trim();
         if(trimmedOutput.startsWith("???"))
         {
@@ -44,25 +53,32 @@ public class PatternConverter {
             trimmedOutput = "}catch(Exception ignored){" + trimmedOutput.replace(":(", "") + "}";
         }
 
+        // Check for dynamic commands
+        if(trimmedOutput.startsWith("$"))
+        {
+            ReplacementResult rr = DynamicCommands.replace(trimmedOutput, className);
+            trimmedOutput = rr.result();
+            Compiler.addImport(rr.importStatement());
+        }
+
+        // don't miss imports!
         if(trimmedOutput.startsWith("import")){
             Compiler.addImport(trimmedOutput + ";");
             return "";
         }
 
+        // Where bulk of processing goes down
         boolean funcDecl = trimmedOutput.startsWith("event");
-
         trimmedOutput = varReplace(trimmedOutput);
         trimmedOutput = commandReplace(trimmedOutput);
         trimmedOutput = newReplace(trimmedOutput);
         trimmedOutput = equalReplace(trimmedOutput);
         trimmedOutput = friendReplace(trimmedOutput);
-        if(funcDecl){
-            String eventName = trimmedOutput.replace("event", "").split("\\(")[0].trim();
-            trimmedOutput = eventReplace(eventName, trimmedOutput.contains("{"));
-        }
-        else{
+
+        if(!funcDecl){
             trimmedOutput = shortcutReplace(trimmedOutput);
         }
+
         boolean addSemicolon = !trimmedOutput.endsWith("}") && !trimmedOutput.endsWith("{") && !trimmedOutput.endsWith("(");
         if(funcDecl)
             addSemicolon = false;
@@ -196,29 +212,8 @@ public class PatternConverter {
         return input;
     }
 
-    private static String eventReplace(String input, boolean addBrackets){
-        String replacement = switch (input) {
-            case "start" -> "@Override public void start()";
-            case "update" -> "@Overridepublic void update()";
-            default -> input;
-        };
-        if(addBrackets){
-            replacement = replacement + "{";
-        }
-        return replacement;
-    }
-
     private static String friendReplace(String input){
-        /*
-        Turn
-        :) friend SomeScript (String arg1, int arg2){(
-        )}
-        into
-           public final Friend friend = new Friend(SomeScript.class.getName(), args-> {String arg1 = (String)args[0]; int arg2 = (int)args[1];
-                System.out.println("H
-           });
-         */
-        if(!input.startsWith(":)") && !input.startsWith("Friend "))
+        if(!input.startsWith(":)"))
             return input;
 
         String[] split = input.split(" ");
@@ -232,15 +227,23 @@ public class PatternConverter {
         }
         String[] argClasses = new String[argSplit.length];
         String[] argNames = new String[argSplit.length];
-        for (int i = 0; i < argSplit.length; i++) {
-            String[] data = argSplit[i].split(" ");
-            argClasses[i] = data[0];
-            argNames[i] = data[1];
+
+        if(argSplit.length > 0 ){
+            for (int i = 0; i < argSplit.length; i++) {
+                String[] data = argSplit[i].split(" ");
+                if(data.length>1)
+                {
+                    argClasses[i] = data[0];
+                    argNames[i] = data[1];
+                }
+            }
         }
 
         String result = "";
-        result += "public final Friend " + name + " = new Friend(" + className + ".class.getName(), args-> {";
+        result += "public final Friend " + name + " = new Friend(" + className + ".class.getName(), args-> { ";
         for (int i = 0; i < argClasses.length; i++) {
+            if(argClasses[i] == null)
+                continue;
             result += argClasses[i] + " " + argNames[i] + " = (" + argClasses[i] + ")args[" + i + "];";
         }
         result = result.substring(0, result.length() - 1);

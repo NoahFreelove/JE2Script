@@ -13,7 +13,7 @@ public class VarReplacement {
         replacements.put("vec2i", new ReplacementResult("Vector2i","import org.joml.Vector2i;"));
         replacements.put("bool ", new ReplacementResult("boolean ",""));
         replacements.put("string", new ReplacementResult("String",""));
-        replacements.put("str", new ReplacementResult("String",""));
+        replacements.put("Str", new ReplacementResult("String",""));
         replacements.put("GO", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
         replacements.put("gameobject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
         replacements.put("cam", new ReplacementResult("Camera","import JE.Rendering.Camera;"));

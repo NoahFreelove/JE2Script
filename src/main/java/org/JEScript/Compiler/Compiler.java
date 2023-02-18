@@ -12,6 +12,8 @@ public class Compiler {
     private static ArrayList<String> imports = new ArrayList<>();
 
     public static void addImport(String s) {
+        if(s.equals(""))
+            return;
         if (!imports.contains(s)) {
             imports.add(s);
         }
@@ -41,13 +43,15 @@ public class Compiler {
         }
         // add all imports to beginning of lines
         for (String s : imports) {
-            lines.add(0, s);
+            lines.add(1, s);
         }
 
         // save to file named <filename>.java
+        // get filepath
+        String filepath = file.getAbsolutePath();
         String filename = file.getName();
         String[] split = filename.split("\\.");
-        String newFilename = split[0] + ".java";
+        String newFilename = filepath.substring(0, filepath.length() - filename.length()) + split[0] + ".java";
         File newFile = new File(newFilename);
         write(newFile, lines.toArray(new String[0]));
         long endTime = System.currentTimeMillis();
