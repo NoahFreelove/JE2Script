@@ -1,4 +1,4 @@
-package org.JEScript.Patterns;
+package org.JE.JEScript.Patterns;
 
 public class DynamicCommands {
 

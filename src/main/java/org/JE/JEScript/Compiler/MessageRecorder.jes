@@ -1,6 +1,6 @@
-package org.JEScript.Compiler;
-import org.JEScript.Main;
-import JE.Objects.Scripts.Base.Script;
+package org.JE.JEScript.Compiler;
+import org.JE.JEScript.Main;
+import org.JE.JE2.Objects.Scripts.Base.Script;
 
 public class MessageRecorder extends Script{
     private Str[] allMessages : **Str[1];

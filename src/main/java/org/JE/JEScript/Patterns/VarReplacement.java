@@ -1,4 +1,4 @@
-package org.JEScript.Patterns;
+package org.JE.JEScript.Patterns;
 
 import java.util.HashMap;
 
@@ -14,9 +14,9 @@ public class VarReplacement {
         replacements.put("bool ", new ReplacementResult("boolean ",""));
         replacements.put("string", new ReplacementResult("String",""));
         replacements.put("Str", new ReplacementResult("String",""));
-        replacements.put("GO", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
-        replacements.put("gameobject", new ReplacementResult("GameObject","import JE.Objects.GameObject;"));
-        replacements.put("cam", new ReplacementResult("Camera","import JE.Rendering.Camera;"));
+        replacements.put("GO", new ReplacementResult("GameObject","import org.JE.JE2.Objects.GameObject;"));
+        replacements.put("gameobject", new ReplacementResult("GameObject","import org.JE.JE2.Objects.GameObject;"));
+        replacements.put("cam", new ReplacementResult("Camera","import org.JE.JE2.Rendering.Camera;"));
         replacements.put("run", new ReplacementResult("()->",""));
         replacements.put("lam", new ReplacementResult("this::",""));
 

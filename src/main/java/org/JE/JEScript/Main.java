@@ -1,9 +1,7 @@
-package org.JEScript;
+package org.JE.JEScript;
 
-import org.JEScript.Compiler.Compiler;
-import org.JEScript.Compiler.MessageRecorder;
+import org.JE.JEScript.Compiler.Compiler;
 
-import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 

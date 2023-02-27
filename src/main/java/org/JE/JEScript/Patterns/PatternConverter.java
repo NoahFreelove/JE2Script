@@ -1,6 +1,6 @@
-package org.JEScript.Patterns;
+package org.JE.JEScript.Patterns;
 
-import org.JEScript.Compiler.Compiler;
+import org.JE.JEScript.Compiler.Compiler;
 
 public class PatternConverter {
 
@@ -247,7 +247,7 @@ public class PatternConverter {
             result += argClasses[i] + " " + argNames[i] + " = (" + argClasses[i] + ")args[" + i + "];";
         }
         result = result.substring(0, result.length() - 1);
-        Compiler.addImport("import JE.Utility.Friend;");
+        Compiler.addImport("import org.JE.JE2.Utility.Friend;");
 
         return result;
     }

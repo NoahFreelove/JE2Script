@@ -1,6 +1,6 @@
-package org.JEScript;
+package org.JE.JEScript;
 
-import org.JEScript.Compiler.Compiler;
+import org.JE.JEScript.Compiler.Compiler;
 
 import java.io.File;
 import java.util.ArrayList;

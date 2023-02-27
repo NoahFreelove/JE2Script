@@ -1,4 +1,4 @@
-package org.JEScript.Compiler;
+package org.JE.JEScript.Compiler;
 
 public enum CompileResult {
     SUCCESS,

@@ -1,6 +1,6 @@
-package org.JEScript.Compiler;
+package org.JE.JEScript.Compiler;
 
-import org.JEScript.Patterns.PatternConverter;
+import org.JE.JEScript.Patterns.PatternConverter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -38,7 +38,12 @@ public class Compiler {
                 i--;
             }
             else {
-                lines.set(i, PatternConverter.convert(line));
+                try {
+                    lines.set(i, PatternConverter.convert(line));
+                }
+                catch (Exception e){
+                    System.out.println("error with line: " + i + " err:" + e.getMessage());
+                }
             }
         }
         // add all imports to beginning of lines
